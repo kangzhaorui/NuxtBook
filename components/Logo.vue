@@ -1,3 +1,11 @@
+<!--
+ * @Author: your name
+ * @Date: 2021-03-06 23:25:14
+ * @LastEditTime: 2021-03-08 18:27:14
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /localProject/iviewShuyuan/components/Logo.vue
+-->
 <template>
   <svg class="NuxtLogo" width="245" height="180" viewBox="0 0 452 342" xmlns="http://www.w3.org/2000/svg">
     <path
@@ -20,10 +28,10 @@
   animation: 1s appear;
   margin: auto;
 }
-
+/* 
 @keyframes appear {
   0% {
     opacity: 0;
   }
-}
+} */
 </style>

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-06 23:25:14
- * @LastEditTime: 2021-03-06 23:53:46
+ * @LastEditTime: 2021-03-08 21:42:00
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /localProject/iviewShuyuan/pages/index.vue
@@ -13,7 +13,7 @@
 </template>
 
 <script>
-  import Logo from '~/components/Logo.vue'
+  // import Logo from '~/components/Logo.vue'
   export default {
     data() {
       return {
@@ -21,6 +21,9 @@
         theme2: 'dark'
       };
     },
+    asyncData({ redirect }) {
+    redirect('/home/book')
+  }
   }
 </script>
 

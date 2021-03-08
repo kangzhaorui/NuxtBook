@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-03-06 23:50:34
- * @LastEditTime: 2021-03-08 13:38:50
+ * @LastEditTime: 2021-03-08 21:39:51
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /localProject/iviewShuyuan/pages/home/book/index.vue
@@ -21,12 +21,21 @@
         <Card :dis-hover="true">
             <!-- <Button @click="handleSelectAll(true)">Set all selected</Button>
         <Button @click="handleSelectAll(false)">Cancel all selected</Button> -->
-            <div style="margin-bottom: 8px;">
+            <!-- <div style="margin-bottom: 8px;">
                 <Button type="primary" @click="shuyuanBtn(0)">生成书源</Button>
                 <Button type="warning" @click="shuyuanBtn(1)">分享书源</Button>
-            </div>
+            </div> -->
 
-            <Table @on-selection-change="selectRows" border ref="selection" :columns="columns4" :data="data1"></Table>
+            <Table @on-selection-change="selectRows" border ref="selection" :columns="columns4" :data="bookData">
+                <template slot-scope="{ row, index }" slot="otherMsg">
+                    <span>{{row.ctime}}</span>
+                </template>
+                <template slot-scope="{ row, index }" slot="name">
+                    <a @click="goBookDetail(row)">{{row.name}}</a>
+                    <br />
+                    <span>{{row.url}}</span>
+                </template>
+            </Table>
         </Card>
         <Modal v-model="startBookFlag" title="导入方式" :footer-hide="true">
             <div>
@@ -50,61 +59,48 @@
                 startBookFlag: false,
                 selectRowsList: [],
                 columns4: [
+                    //设置多选的不用先注释掉
+                    // {
+                    //     type: 'selection',
+                    //     width: 60,
+                    //     align: 'center'
+                    // },
                     {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
+                        title: '名称',
+                        key: 'name',
+                        slot: 'name',
                     },
                     {
-                        title: 'Name',
-                        key: 'name'
-                    },
-                    {
-                        title: 'Age',
+                        title: '其他信息',
+                        slot:"otherMsg",
                         key: 'age'
                     },
                     {
-                        title: 'Address',
-                        key: 'address'
-                    }
+                        title: '分享者',
+                        key: 'shareUsername'
+                    },
                 ],
-                data1: [
-                    {
-                        name: 'John Brown',
-                        age: 18,
-                        address: 'New York No. 1 Lake Park',
-                        date: '2016-10-03'
-                    },
-                    {
-                        name: 'Jim Green',
-                        age: 24,
-                        address: 'London No. 1 Lake Park',
-                        date: '2016-10-01'
-                    },
-                    {
-                        name: 'Joe Black',
-                        age: 30,
-                        address: 'Sydney No. 1 Lake Park',
-                        date: '2016-10-02'
-                    },
-                    {
-                        name: 'Jon Snow',
-                        age: 26,
-                        address: 'Ottawa No. 2 Lake Park',
-                        date: '2016-10-04'
-                    }
-                ]
+                bookData: []
             }
         },
         async asyncData() {
-            // let { res } = await axios.get(`${process.env.api}/booksource/list?page=0&key=17k`);
-            // console.log('---', res)
-            // return { res }
+            let { data } = await axios.get(`${process.env.api}/booksource/list`);//?page=0&key=17k
+            console.log('datares---', data)
+            return { bookData:data }
         },
         methods: {
+            goBookDetail(rows){
+                this.$router.push({path:`/home/bookDetail/${rows.id}`})
+              console.log('roew---',rows)
+            },
             //搜索按钮，点击搜索请求数据
            handleSubmit(name) {
-                console.log('----', this.formItem)
+            let that = this;
+            this.$axios.get(`${process.env.api}/booksource/list?key=${this.formItem.input}`).then((data) => {
+                this.bookData=data.data
+            }).catch((err) => {
+                console.log('err---', err)
+            });
             },
             handleSelectAll(status) {
                 this.$refs.selection.selectAll(status);
@@ -132,6 +128,7 @@
         }
     }
 </script>
-<style scoped>
+<style scoped  >
+    
 
 </style>
