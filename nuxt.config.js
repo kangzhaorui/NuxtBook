@@ -67,6 +67,6 @@ export default {
     ],
   },
   env: {
-    api: process.env.api || 'http://api.bs.deepink.cn'
+    api: process.env.api || 'http://api.shuyuansy.xyz'
   }
 }
